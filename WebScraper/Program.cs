@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
 namespace WebScraper
 {
@@ -10,6 +9,11 @@ namespace WebScraper
     {
         static void Main(string[] args)
         {
+            using (IWebDriver driver = new ChromeDriver())
+            {
+                driver.Navigate().GoToUrl("https://login.yahoo.com/");
+                Console.WriteLine("Page Title: " + driver.Title);
+            }
         }
     }
 }
