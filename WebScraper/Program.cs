@@ -12,7 +12,6 @@ namespace WebScraper
 {
     class Program
     {
-        [Obsolete]
         static void Main(string[] args)
         {
             using (IWebDriver driver = new ChromeDriver())
@@ -31,7 +30,6 @@ namespace WebScraper
                 password.SendKeys(ypwd);
                 password.SendKeys(Keys.Return);
 
-                Thread.Sleep(20000);
 
             }
         }
