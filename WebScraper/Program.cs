@@ -29,8 +29,6 @@ namespace WebScraper
                 string ypwd = ConfigurationManager.AppSettings["ypwd"];
                 password.SendKeys(ypwd);
                 password.SendKeys(Keys.Return);
-
-
             }
         }
     }
