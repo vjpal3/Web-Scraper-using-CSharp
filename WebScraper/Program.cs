@@ -29,7 +29,10 @@ namespace WebScraper
                 password.SendKeys(ypwd);
                 password.SendKeys(Keys.Return);
 
-                driver.FindElement(By.LinkText("Finance")).Click();
+                WebDriverWait waitForFinanceLink = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                IWebElement financeLink = waitForFinanceLink.Until(ExpectedConditions.ElementToBeClickable(By.LinkText("Finance")));
+                financeLink.Click();
+                //driver.FindElement(By.LinkText("Finance")).Click();
                 Thread.Sleep(10000);
             }
         }
