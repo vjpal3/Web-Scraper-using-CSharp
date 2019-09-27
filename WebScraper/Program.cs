@@ -17,7 +17,6 @@ namespace WebScraper
             using (IWebDriver driver = new ChromeDriver())
             {
                 driver.Navigate().GoToUrl("https://login.yahoo.com/");
-                
 
                 IWebElement username = driver.FindElement(By.Id("login-username"));
                 username.SendKeys("vrishalipal");
@@ -29,6 +28,9 @@ namespace WebScraper
                 string ypwd = ConfigurationManager.AppSettings["ypwd"];
                 password.SendKeys(ypwd);
                 password.SendKeys(Keys.Return);
+
+                driver.FindElement(By.LinkText("Finance")).Click();
+                Thread.Sleep(10000);
             }
         }
     }
