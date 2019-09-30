@@ -33,19 +33,19 @@ namespace WebScraper
                 password.SendKeys(Keys.Return);
 
                 WebDriverWait waitForFinanceLink = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-                
-                //IWebElement financeLink = waitForFinanceLink.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//a[@href='https://finance.yahoo.com/']")));
-                IWebElement financeLink = waitForFinanceLink.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div[@id='mega-bottombar']/ul/li[3]/a[@href='https://finance.yahoo.com/']")));
+
+                IWebElement financeLink = waitForFinanceLink.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div[@id='mega-bottombar']/ul/li[3]/a")));
 
                 try
                 {
-                    driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(15);
-                    financeLink.Click(); 
+                    driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(20);
+                    financeLink.Click();
                 }
+
                 catch (WebDriverTimeoutException) { }
                 finally
                 {
-                    driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(5);
+                    driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(20);
                 }
 
                 Console.WriteLine("Title: " + driver.Title);
@@ -58,7 +58,6 @@ namespace WebScraper
                 IWebElement folio = waitForFolioList.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("ul[data-test='secnav-list'] li:nth-child(2)>a[title='Solid Folio']")));
                 folio.Click();
 
-                Thread.Sleep(10000);
                 driver.Quit();
             }
         }
