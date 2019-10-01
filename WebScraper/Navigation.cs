@@ -17,21 +17,16 @@ namespace WebScraper
 
         public void Login(IWebDriver driver)
         {
-            string username = "login-username";
-            EnterUserCredentials(driver, username);
+            IWebElement username = driver.FindElement(By.Id("login-username"));
+            string yUserName = ConfigurationManager.AppSettings["yUserName"];
+            username.SendKeys(yUserName);
+            username.Submit();
 
-            string userPasswd = "login-passwd";
-            EnterUserCredentials(driver, userPasswd);
-
-        }
-
-        private static void EnterUserCredentials(IWebDriver driver, string userValue)
-        {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
-            IWebElement element = wait.Until(ExpectedConditions.ElementToBeClickable(By.Id(userValue)));
-            string userCredential = ConfigurationManager.AppSettings[userValue];
-            element.SendKeys(userCredential);
-            element.SendKeys(Keys.Return);
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            IWebElement password = wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("login-passwd")));
+            string yUserPwd = ConfigurationManager.AppSettings["yUserPwd"];
+            password.SendKeys(yUserPwd);
+            password.SendKeys(Keys.Return);
         }
 
         public void GoToFinancePage(IWebDriver driver)
@@ -41,13 +36,13 @@ namespace WebScraper
 
             try
             {
-                driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(15);
+                driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(20);
                 financeLink.Click();
             }
             catch (WebDriverTimeoutException) { }
             finally
             {
-                driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(15);
+                driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(20);
             }
             Console.WriteLine("Title: " + driver.Title);
         }
@@ -61,7 +56,7 @@ namespace WebScraper
 
         public void OpenAPortfolio(IWebDriver driver)
         {
-            WebDriverWait waitForFolio = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait waitForFolio = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             IWebElement folio = waitForFolio.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("ul[data-test='secnav-list'] li:nth-child(2)>a[title='Solid Folio']")));
             folio.Click();
         }
