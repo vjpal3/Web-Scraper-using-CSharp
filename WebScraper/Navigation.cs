@@ -36,18 +36,7 @@ namespace WebScraper
         public void GoToFinancePage(IWebDriver driver)
         {
             WebDriverWait waitForFinanceLink = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            IWebElement financeLink = waitForFinanceLink.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div[@id='mega-bottombar']/ul/li[3]/a[@href='https://finance.yahoo.com/']")));
-
-            try
-            {
-                driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(20);
-                financeLink.Click();
-            }
-            catch (WebDriverTimeoutException) { }
-            finally
-            {
-                driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(20);
-            }
+            driver.Navigate().GoToUrl("https://finance.yahoo.com");
             Console.WriteLine("Title: " + driver.Title);
         }
 
@@ -63,6 +52,9 @@ namespace WebScraper
             WebDriverWait waitForFolio = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             IWebElement folio = waitForFolio.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("ul[data-test='secnav-list'] li:nth-child(2)>a[title='Solid Folio']")));
             folio.Click();
+
+            WebDriverWait waitForCustomView = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            driver.Navigate().GoToUrl("https://finance.yahoo.com/portfolio/p_3/view/view_4");
         }
 
         public void CloseBrowser(IWebDriver driver)
@@ -70,6 +62,5 @@ namespace WebScraper
             Thread.Sleep(10000);
             driver.Quit();
         }
-
     }
 }
