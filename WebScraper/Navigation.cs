@@ -35,8 +35,17 @@ namespace WebScraper
 
         public void GoToFinancePage(IWebDriver driver)
         {
-            WebDriverWait waitForFinanceLink = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            driver.Navigate().GoToUrl("https://finance.yahoo.com");
+            WebDriverWait waitForFinanceLink = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(20);
+            
+            try
+            {
+                driver.Navigate().GoToUrl("https://finance.yahoo.com");
+            }
+            catch (WebDriverException)
+            {
+                Console.WriteLine("Yahoo finance Page did not load within 20 seconds!");
+            }
             Console.WriteLine("Title: " + driver.Title);
         }
 

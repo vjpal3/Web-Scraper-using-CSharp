@@ -14,13 +14,8 @@ namespace WebScraper
     {
         static void Main(string[] args)
         {
-            
-
-            var navigation = new Navigation();
-            var scraper = new Scraper(navigation);
+            var scraper = new Scraper(new Navigation(), new StockDataCollection());
             scraper.StartScraper(); 
-
-            
         }
     }
 }

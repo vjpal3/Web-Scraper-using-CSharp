@@ -12,11 +12,13 @@ namespace WebScraper
     class Scraper
     {
         public IWebDriver Driver { get; private set; }
-        public Navigation navigation { get; set; }
+        public Navigation WebNavigation { get; set; }
+        public StockDataCollection DataCollection { get; set; }
 
-        public Scraper(Navigation nav)
+        public Scraper(Navigation navigation, StockDataCollection collection)
         {
-            navigation = nav;
+            WebNavigation = navigation;
+            DataCollection = collection;
         }
         public void StartScraper()
         {
@@ -26,17 +28,30 @@ namespace WebScraper
             using (Driver = new ChromeDriver(options))
             {
                 StartNavigation();
+                StartDataCollection();
+                StopScraper();
             }   
+        }
+
+        private void StopScraper()
+        {
+            WebNavigation.CloseBrowser(Driver);
+        }
+
+        private void StartDataCollection()
+        {
+            DataCollection.AccessTableData(Driver);
         }
 
         private void StartNavigation()
         {
-            navigation.LaunchBrowser(Driver);
-            navigation.Login(Driver);
-            navigation.GoToFinancePage(Driver);
-            navigation.GetListOfPortfolios(Driver);
-            navigation.OpenAPortfolio(Driver);
-            navigation.CloseBrowser(Driver);
+            WebNavigation.LaunchBrowser(Driver);
+            WebNavigation.Login(Driver);
+            WebNavigation.GoToFinancePage(Driver);
+            WebNavigation.GetListOfPortfolios(Driver);
+            WebNavigation.OpenAPortfolio(Driver);
+
+            
         }
     }
 }
