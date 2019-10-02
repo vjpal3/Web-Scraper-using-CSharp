@@ -46,7 +46,6 @@ namespace WebScraper
             {
                 Console.WriteLine("Yahoo finance Page did not load within 20 seconds!");
             }
-            Console.WriteLine("Title: " + driver.Title);
         }
 
         public void GetListOfPortfolios(IWebDriver driver)
