@@ -2,11 +2,15 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using System.IO;
+using System.Text;
 
 namespace WebScraper
 {
     class StockDataCollection
     {
+        
+        private readonly StringBuilder stockData = new StringBuilder();
         public void AccessTableData(IWebDriver driver)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
@@ -14,6 +18,13 @@ namespace WebScraper
 
             ScrapeDataHeader(driver);
             ScrapeStockData(driver);
+            SaveDataToFile();
+        }
+
+        private void SaveDataToFile()
+        {
+            string fullpath = @"e:\Vrishali\stockdata.txt";
+            File.WriteAllText(fullpath, stockData.ToString());
         }
 
         private void ScrapeDataHeader(IWebDriver driver)
@@ -22,9 +33,11 @@ namespace WebScraper
             for (int i = 1; i <= headerColCount - 1; i++)
             {
                 string headerData = driver.FindElement(By.XPath("//body//th[" + i + "]")).Text + "\t";
-                Console.Write(headerData);
+                //Console.Write(headerData);
+                stockData.Append(headerData);
             }
-            Console.WriteLine("\n");
+            //Console.WriteLine("\n");
+            stockData.Append("\n");
         }
 
         private void ScrapeStockData(IWebDriver driver)
@@ -36,9 +49,11 @@ namespace WebScraper
                 for (int j = 1; j <= columnCount - 2; j++)
                 {
                     string cellData = driver.FindElement(By.XPath("//table[@class='W(100%)']/tbody/tr[" + i + "]/td[" + j + "]")).Text + "\t";
-                    Console.Write(cellData);
+                    //Console.Write(cellData);
+                    stockData.Append(cellData);
                 }
-                Console.WriteLine();
+                //Console.WriteLine();
+                stockData.Append("\n");
             }
         }
     }
