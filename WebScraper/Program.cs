@@ -15,7 +15,7 @@ namespace WebScraper
         static void Main(string[] args)
         {
             var scraper = new Scraper(new Navigation(), new StockDataCollection());
-            scraper.StartScraper(); 
+            scraper.StartScraper();
         }
     }
 }

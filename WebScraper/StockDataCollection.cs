@@ -2,7 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-using System.IO;
+
 using System.Text;
 
 namespace WebScraper
@@ -18,14 +18,13 @@ namespace WebScraper
 
             ScrapeDataHeader(driver);
             ScrapeStockData(driver);
-            //SaveDataToFile();
+            FileAccess.SaveDataToFile(stockData.ToString());
         }
 
-        private void SaveDataToFile()
-        {
-            string fullpath = @"e:\Vrishali\stockdata.txt";
-            File.WriteAllText(fullpath, stockData.ToString());
-        }
+        //public string GetStockData()
+        //{
+        //    return stockData.ToString();
+        //}
 
         private void ScrapeDataHeader(IWebDriver driver)
         {
