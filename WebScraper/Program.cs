@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System.Threading;
-using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.WaitHelpers;
-using System.Configuration;
-using OpenQA.Selenium.Interactions;
-using WebScraper.DatabaseAccess;
+﻿using WebScraper.DatabaseAccess;
 
 namespace WebScraper
 {
@@ -18,7 +9,9 @@ namespace WebScraper
             //var scraper = new Scraper(new Navigation(), new StockDataCollection());
             //scraper.StartScraper();
 
-            new DatabaseWriter().TestDataBaseConection();
+            var dbWriter = new DatabaseWriter();
+            dbWriter.GetFileData();
+            dbWriter.InsertCompany();
         }
     }
 }
