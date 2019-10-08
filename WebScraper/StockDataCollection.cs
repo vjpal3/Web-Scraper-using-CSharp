@@ -18,7 +18,7 @@ namespace WebScraper
 
             ScrapeDataHeader(driver);
             ScrapeStockData(driver);
-            SaveDataToFile();
+            //SaveDataToFile();
         }
 
         private void SaveDataToFile()
