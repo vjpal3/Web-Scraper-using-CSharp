@@ -7,6 +7,7 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System.Configuration;
 using OpenQA.Selenium.Interactions;
+using WebScraper.DatabaseAccess;
 
 namespace WebScraper
 {
@@ -14,8 +15,10 @@ namespace WebScraper
     {
         static void Main(string[] args)
         {
-            var scraper = new Scraper(new Navigation(), new StockDataCollection());
-            scraper.StartScraper();
+            //var scraper = new Scraper(new Navigation(), new StockDataCollection());
+            //scraper.StartScraper();
+
+            new DatabaseWriter().TestDataBaseConection();
         }
     }
 }
