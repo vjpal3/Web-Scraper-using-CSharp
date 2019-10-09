@@ -16,7 +16,7 @@ namespace WebScraper
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table")));
 
-            ScrapeDataHeader(driver);
+            //ScrapeDataHeader(driver);
             ScrapeStockData(driver);
             SaveDataToFile(); 
         }

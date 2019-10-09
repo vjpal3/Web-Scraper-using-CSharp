@@ -59,6 +59,7 @@
     <Compile Include="DatabaseAccess\DatabaseWriter.cs" />
     <Compile Include="DatabaseAccess\Models\Company.cs" />
     <Compile Include="DatabaseAccess\Models\ScrapeInfo.cs" />
+    <Compile Include="DatabaseAccess\Models\StockData.cs" />
     <Compile Include="FileAccess.cs" />
     <Compile Include="DatabaseAccess\Helper.cs" />
     <Compile Include="StockDataCollection.cs" />
