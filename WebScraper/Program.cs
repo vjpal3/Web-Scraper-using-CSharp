@@ -11,7 +11,8 @@ namespace WebScraper
 
             var dbWriter = new DatabaseWriter();
             dbWriter.GetFileData();
-            dbWriter.InsertCompany();
+            //dbWriter.InsertCompany();
+            dbWriter.InsertScrapeInfo();
         }
     }
 }
