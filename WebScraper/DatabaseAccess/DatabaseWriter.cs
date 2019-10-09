@@ -38,7 +38,6 @@ namespace WebScraper.DatabaseAccess
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.ConnectionStrVal("ScraperData")))
             {
-                var scrapesInfo = new List<ScrapeInfo>();
                 var today = DateTime.Today;
                 var timeZone = "";
                 try
@@ -62,9 +61,7 @@ namespace WebScraper.DatabaseAccess
                     Console.WriteLine("Invalid Time data");
                 }
 
-                scrapesInfo.Add(new ScrapeInfo { ScrapeDate = today, TimeZone = timeZone });
-
-                connection.Execute("dbo.uspScrapesInfo_InsertScrapeInfo @ScrapeDate, @TimeZone", scrapesInfo);
+                connection.Execute("dbo.uspScrapesInfo_InsertScrapeInfo @ScrapeDate, @TimeZone", new ScrapeInfo { ScrapeDate = today, TimeZone = timeZone });
             }
         }
 
@@ -75,11 +72,6 @@ namespace WebScraper.DatabaseAccess
                 var stocksData = new List<StockData>();
                 int scrapeId = GetScrapeId(connection);
                 Console.WriteLine("scrapeId: " + scrapeId);
-
-                //0     1                     3      4      5       6           7       8       9   10      
-                //MU Micron Technology, Inc. 44.08 - 0.47 - 1.05 % 3:54PM EDT  44.55   44.30   10  42.01   Sep 12, 2019 - 51.39   28.39   44.19   8   44.20   14  48.656B
-                //  11         12   13      14      15   16     17    18    19
-                //Take 1 less starting from 3
 
                 foreach (var line in lines)
                 {
@@ -175,14 +167,12 @@ namespace WebScraper.DatabaseAccess
 
         private decimal? ParseDecimalString(string strDecimal)
         {
-            decimal result;
-            return decimal.TryParse(strDecimal, out result) ? result : (decimal?)null;
+            return decimal.TryParse(strDecimal, out decimal result) ? result : (decimal?)null;
         }
 
         private int? ParseIntString(string strInt)
         {
-            int result;
-            return int.TryParse(strInt, out result) ? result : (int?)null;
+            return int.TryParse(strInt, out int result) ? result : (int?)null;
         }
 
     }
