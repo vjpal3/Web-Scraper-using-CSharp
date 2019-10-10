@@ -23,12 +23,6 @@ namespace WebScraper
             //SaveDataToFile(); 
         }
 
-        //public void SaveDataToFile()
-        //{
-        //    string fullPath = @"e:\Vrishali\stockdata.txt";
-        //    File.WriteAllText(fullPath, stockData.ToString());
-        //}
-
         public List<string> GetStockData()
         {
             return stockData;
@@ -42,10 +36,8 @@ namespace WebScraper
             for (int i = 1; i <= headerColCount - 1; i++)
             {
                 headerData += driver.FindElement(By.XPath("//body//th[" + i + "]")).Text + "\t";
-                //Console.Write(headerData);
                 //stockData.Append(headerData);
             }
-            //Console.WriteLine("\n");
             stockData.Add(headerData);
         }
 
@@ -59,11 +51,7 @@ namespace WebScraper
                 for (int j = 1; j <= columnCount - 2; j++)
                 {
                     cellData += driver.FindElement(By.XPath("//table[@class='W(100%)']/tbody/tr[" + i + "]/td[" + j + "]")).Text + "\t";
-                    //Console.Write(cellData);
-                    //stockData.Append(cellData);
                 }
-                //Console.WriteLine();
-                //stockData.Append("\n");
                 stockData.Add(cellData);
             }
         }

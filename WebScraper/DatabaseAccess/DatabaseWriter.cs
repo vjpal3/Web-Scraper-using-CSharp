@@ -19,13 +19,6 @@ namespace WebScraper.DatabaseAccess
             this.scrapedData = scrapedData;
         }
 
-        //public void GetFileData()
-        //{
-        //    string fullPath = @"e:\Vrishali\stockdata.txt";
-        //    scrapedData = new List<string>(File.ReadAllLines(fullPath));
-        //}
-
-
         public void InsertCompany()
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.ConnectionStrVal("ScraperData")))
