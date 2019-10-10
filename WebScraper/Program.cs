@@ -9,8 +9,8 @@ namespace WebScraper
             var scraper = new Scraper(new Navigation(), new StockDataCollection());
             scraper.StartScraper();
 
-            var dbWriter = new DatabaseWriter();
-            dbWriter.GetFileData();
+            var dbWriter = new DatabaseWriter(scraper.GetScraperData());
+            //dbWriter.GetFileData();
             dbWriter.InsertCompany();
             dbWriter.InsertScrapeInfo();
             dbWriter.InsertStockData();

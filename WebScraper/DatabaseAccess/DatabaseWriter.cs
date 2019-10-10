@@ -12,22 +12,29 @@ namespace WebScraper.DatabaseAccess
 {
     class DatabaseWriter
     {
-        private List<string> lines;
+        private readonly List<string> scrapedData;
 
-        public void GetFileData()
+        public DatabaseWriter(List<string> scrapedData)
         {
-            string fullPath = @"e:\Vrishali\stockdata.txt";
-            lines = new List<string>(File.ReadAllLines(fullPath));
+            this.scrapedData = scrapedData;
         }
+
+        //public void GetFileData()
+        //{
+        //    string fullPath = @"e:\Vrishali\stockdata.txt";
+        //    scrapedData = new List<string>(File.ReadAllLines(fullPath));
+        //}
+
+
         public void InsertCompany()
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.ConnectionStrVal("ScraperData")))
             {
                 var companies = new List<Company>();
                 
-                foreach (var line in lines)
+                foreach (var item in scrapedData)
                 {
-                    var data = line.Split('\t');
+                    var data = item.Split('\t');
                     companies.Add(new Company { SymbolName = data[0].Trim(), CompanyName = data[1].Trim() });
                 }
                 connection.Execute("dbo.uspCompanies_InsertCompany @SymbolName, @CompanyName", companies);
@@ -42,7 +49,7 @@ namespace WebScraper.DatabaseAccess
                 var timeZone = "";
                 try
                 {
-                    var data = lines[0].Split('\t');
+                    var data = scrapedData[0].Split('\t');
                     timeZone = data[5].Split(' ')[1].Trim();
                     var timeString = data[5].Split(' ')[0].Trim();
 
@@ -73,9 +80,9 @@ namespace WebScraper.DatabaseAccess
                 int scrapeId = GetScrapeId(connection);
                 Console.WriteLine("scrapeId: " + scrapeId);
 
-                foreach (var line in lines)
+                foreach (var item in scrapedData)
                 {
-                    var data = line.Split('\t');
+                    var data = item.Split('\t');
                  
                     int symbolId = GetSymbolId(connection, data[0].Trim());
                     Console.WriteLine("symbolId: " + symbolId);
@@ -127,31 +134,6 @@ namespace WebScraper.DatabaseAccess
             }
         }
 
-        private decimal? ParseMarketCap(string marketCap)
-        {
-            char capUnit = marketCap[marketCap.Length - 1];
-            decimal? marketCapValue = 0;
-            switch(capUnit)
-            {
-                case 'B':
-                    marketCapValue = ParseDecimalString(marketCap.TrimEnd('B')) * (decimal?)Math.Pow(10.00, 3.00);
-                    break;
-
-                case 'T':
-                    marketCapValue = ParseDecimalString(marketCap.TrimEnd('T')) * (decimal?)Math.Pow(10.00, 6.00);
-                    break;
-
-                case 'M':
-                    marketCapValue = ParseDecimalString(marketCap.TrimEnd('M'));
-                    break;
-
-                default:
-                    marketCapValue = ParseDecimalString(marketCap);
-                    break;
-            }
-            return marketCapValue;
-        }
-
         private int GetSymbolId(IDbConnection connection, string symbolName)
         {
             List<Company> companies = connection.Query<Company>("dbo.uspCompanies_GetSymbol @SymbolName", new { SymbolName = symbolName }).ToList();
@@ -175,6 +157,30 @@ namespace WebScraper.DatabaseAccess
             return int.TryParse(strInt, out int result) ? result : (int?)null;
         }
 
+        private decimal? ParseMarketCap(string marketCap)
+        {
+            char capUnit = marketCap[marketCap.Length - 1];
+            decimal? marketCapValue = 0;
+            switch (capUnit)
+            {
+                case 'B':
+                    marketCapValue = ParseDecimalString(marketCap.TrimEnd('B')) * (decimal?)Math.Pow(10.00, 3.00);
+                    break;
+
+                case 'T':
+                    marketCapValue = ParseDecimalString(marketCap.TrimEnd('T')) * (decimal?)Math.Pow(10.00, 6.00);
+                    break;
+
+                case 'M':
+                    marketCapValue = ParseDecimalString(marketCap.TrimEnd('M'));
+                    break;
+
+                default:
+                    marketCapValue = ParseDecimalString(marketCap);
+                    break;
+            }
+            return marketCapValue;
+        }
     }
 }
 

@@ -5,7 +5,7 @@ using System.Threading;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System.Configuration;
-
+using System.Collections.Generic;
 
 namespace WebScraper
 {
@@ -14,11 +14,17 @@ namespace WebScraper
         public IWebDriver Driver { get; private set; }
         public Navigation WebNavigation { get; set; }
         public StockDataCollection DataCollection { get; set; }
+        private List<string> stockData = new List<string>();
 
         public Scraper(Navigation navigation, StockDataCollection collection)
         {
             WebNavigation = navigation;
             DataCollection = collection;
+        }
+
+        public List<string> GetScraperData()
+        {
+            return stockData;
         }
         public void StartScraper()
         {
@@ -41,6 +47,7 @@ namespace WebScraper
         private void StartDataCollection()
         {
             DataCollection.AccessTableData(Driver);
+            stockData = DataCollection.GetStockData();
         }
 
         private void StartNavigation()

@@ -4,13 +4,15 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System.Text;
 using System.IO;
+using System.Collections.Generic;
 
 namespace WebScraper
 {
     class StockDataCollection
     {
         
-        private readonly StringBuilder stockData = new StringBuilder();
+        //private readonly StringBuilder stockData = new StringBuilder();
+        private readonly List<string> stockData = new List<string>();
         public void AccessTableData(IWebDriver driver)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
@@ -18,27 +20,33 @@ namespace WebScraper
 
             //ScrapeDataHeader(driver);
             ScrapeStockData(driver);
-            SaveDataToFile(); 
+            //SaveDataToFile(); 
         }
 
-        public void SaveDataToFile()
+        //public void SaveDataToFile()
+        //{
+        //    string fullPath = @"e:\Vrishali\stockdata.txt";
+        //    File.WriteAllText(fullPath, stockData.ToString());
+        //}
+
+        public List<string> GetStockData()
         {
-            string fullPath = @"e:\Vrishali\stockdata.txt";
-            File.WriteAllText(fullPath, stockData.ToString());
+            return stockData;
         }
 
 
         private void ScrapeDataHeader(IWebDriver driver)
         {
             int headerColCount = driver.FindElements(By.XPath("//table/thead/tr/th")).Count;
+            string headerData = "";
             for (int i = 1; i <= headerColCount - 1; i++)
             {
-                string headerData = driver.FindElement(By.XPath("//body//th[" + i + "]")).Text + "\t";
+                headerData += driver.FindElement(By.XPath("//body//th[" + i + "]")).Text + "\t";
                 //Console.Write(headerData);
-                stockData.Append(headerData);
+                //stockData.Append(headerData);
             }
             //Console.WriteLine("\n");
-            stockData.Append("\n");
+            stockData.Add(headerData);
         }
 
         private void ScrapeStockData(IWebDriver driver)
@@ -47,14 +55,16 @@ namespace WebScraper
             int columnCount = driver.FindElements(By.XPath("//table/tbody/tr[1]//td")).Count;
             for (int i = 1; i <= rowCount; i++)
             {
+                string cellData = "";
                 for (int j = 1; j <= columnCount - 2; j++)
                 {
-                    string cellData = driver.FindElement(By.XPath("//table[@class='W(100%)']/tbody/tr[" + i + "]/td[" + j + "]")).Text + "\t";
+                    cellData += driver.FindElement(By.XPath("//table[@class='W(100%)']/tbody/tr[" + i + "]/td[" + j + "]")).Text + "\t";
                     //Console.Write(cellData);
-                    stockData.Append(cellData);
+                    //stockData.Append(cellData);
                 }
                 //Console.WriteLine();
-                stockData.Append("\n");
+                //stockData.Append("\n");
+                stockData.Add(cellData);
             }
         }
     }
