@@ -56,6 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseAccess\DatabaseReader.cs" />
     <Compile Include="DatabaseAccess\DatabaseWriter.cs" />
     <Compile Include="DatabaseAccess\Models\Company.cs" />
     <Compile Include="DatabaseAccess\Models\ScrapeInfo.cs" />

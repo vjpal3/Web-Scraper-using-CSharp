@@ -11,5 +11,7 @@ namespace WebScraper.DatabaseAccess.Models
         public int Id { get; set; }
         public string SymbolName { get; set; }
         public string CompanyName { get; set; }
+
+        public StockData stockData { get; set; }
     }
 }
