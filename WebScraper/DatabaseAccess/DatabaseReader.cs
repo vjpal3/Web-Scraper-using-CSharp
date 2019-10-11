@@ -11,7 +11,7 @@ namespace WebScraper.DatabaseAccess
 {
     class DatabaseReader
     {
-        private List<Company> stocksData = new List<Company>();
+        private List<StockDataCompany> stocksData = new List<StockDataCompany>();
 
         public void GetStocksDataByScrapeID(int scrapeId)
         {
@@ -20,38 +20,41 @@ namespace WebScraper.DatabaseAccess
             {
                 scrapeInfo = GetScrapeId(connection, scrapeId);
 
-                stocksData = connection.Query<Company, StockData, Company>
+                stocksData = connection.Query<Company, StockData, StockDataCompany>
                     ("dbo.uspStocksData_Companies_GetByScrapeId @ScrapeId",
                     MapResults,
                     new { ScrapeId = scrapeId }, splitOn: "LastPrice").ToList();
             }
             DisplayStocksData(scrapeInfo);
-
         }
 
-        private Company MapResults(Company company, StockData stockData)
+        private StockDataCompany MapResults(Company company, StockData stockData)
         {
-            company.stockData = stockData;
-            return company;
+            var stockDataCompany = new StockDataCompany
+            {
+                ScrapedStockData = stockData,
+                ScrapedCompanyData = company
+            };
+            return stockDataCompany;
         }
 
         private void DisplayStocksData(ScrapeInfo scrapeInfo)
         {
             Console.WriteLine("Data scraped on: " + scrapeInfo.ScrapeDate.ToString("MMM, dd yyyy h:mm tt") + " " + scrapeInfo.TimeZone);
             Console.WriteLine();
-            foreach (Company data in stocksData)
+            foreach (StockDataCompany data in stocksData)
             {
-                Console.Write(data.SymbolName + "  " + data.CompanyName + "\t");
-                Console.Write("{0:F2} \t", data.stockData.LastPrice);
+                Console.Write(data.ScrapedCompanyData.SymbolName + "  " + data.ScrapedCompanyData.CompanyName + "\t");
+                Console.Write("{0:F2} \t", data.ScrapedStockData.LastPrice);
                 
-                var change = data.stockData.Change;
+                var change = data.ScrapedStockData.Change;
                 Console.Write((change > 0) ? "+{0:F2}\t" : "{0:F2}\t", change);
 
-                var percentChange = data.stockData.PercentChange;
+                var percentChange = data.ScrapedStockData.PercentChange;
                 Console.Write((percentChange > 0) ? "+{0:F2}\t" : "{0:F2}\t", percentChange);
 
-                Console.WriteLine(data.stockData.Shares + "\t"
-                    + data.stockData.TradeDate?.ToString("MMM, dd yyyy")
+                Console.WriteLine(data.ScrapedStockData.Shares + "\t"
+                    + data.ScrapedStockData.TradeDate?.ToString("MMM, dd yyyy")
                 );
             }
             Console.WriteLine();

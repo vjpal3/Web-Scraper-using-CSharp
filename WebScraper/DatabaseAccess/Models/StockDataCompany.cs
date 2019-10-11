@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebScraper.DatabaseAccess.Models
 {
-    class Company
+    class StockDataCompany
     {
-        public int Id { get; set; }
-        public string SymbolName { get; set; }
-        public string CompanyName { get; set; }
+        public StockData ScrapedStockData { get; set; }
+        public Company ScrapedCompanyData { get; set; }
     }
 }
